@@ -1,6 +1,19 @@
 apply plugin: "java"
 
 project.ext.lwjglVersion = "3.0.0a"
+version = "0.0.1"
+
+//create a single Jar with all dependencies
+task jarNative(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+                'Implementation-Version': version,
+                'Main-Class': 'Lwjgl3Test'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
 
 repositories {
     mavenCentral()
